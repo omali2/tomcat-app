@@ -1,19 +1,19 @@
-# Verwende ein Basis-Image mit Java
+# Basis-Image mit Java
 FROM openjdk:17-jdk-slim
 
-# Definiere die Tomcat-Version
+# Tomcat-Version
 ENV TOMCAT_VERSION 10.1.40
 
-# Erstelle ein Verzeichnis für Tomcat
+# Verzeichnis für Tomcat
 RUN mkdir /opt/tomcat
 
 RUN /bin/sh -c set -eux; apt-get update; apt-get install -y curl
 
-# Lade und entpacke Tomcat
+# entpacke Tomcat
 RUN curl -fsSL https://dlcdn.apache.org/tomcat/tomcat-10/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz | \
     tar -xz -C /opt/tomcat --strip-components=1
 
-# Setze Umgebungsvariablen
+# variablen
 ENV CATALINA_HOME /opt/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
 RUN ls -la $CATALINA_HOME/webapps/ROOT/
@@ -28,8 +28,8 @@ RUN cd $CATALINA_HOME/bin && chmod +x *.sh
 RUN ls -la $CATALINA_HOME/webapps/ROOT/
 RUN ls -la $CATALINA_HOME/bin/
 
-# Exponiere Port 8080
+# Port
 EXPOSE 8080
 
-# Start-Skript
+# Start Skript
 CMD ["catalina.sh", "run"]
